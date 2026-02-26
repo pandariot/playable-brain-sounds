@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>17 Sounds That Are Basically Cheat Codes for Your Brain</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Calistoga&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Proxima Nova",Helvetica,Arial,sans-serif;
+  background:#fff;
+  color:#222;
+  font-size:1.125rem;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Nav bar ── */
+.bf-nav{
+  position:sticky;
+  top:0;
+  z-index:400;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.1);
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.bf-logo{
+  font-family:Calistoga,serif;
+  font-size:1.25rem;
+  font-weight:400;
+  color:#e32;
+  text-decoration:none;
+  letter-spacing:-.01em;
+}
+
+/* ── Article header ── */
+.article-header{
+  max-width:625px;
+  margin:2rem auto 0;
+  padding:0 1rem;
+}
+.article-header h1{
+  font-family:Calistoga,serif;
+  font-size:1.625rem;
+  font-weight:400;
+  line-height:1.2;
+  color:#222;
+  margin-bottom:.75rem;
+}
+.article-meta{
+  padding-bottom:1rem;
+  margin-bottom:1.5rem;
+  border-bottom:1px solid rgba(0,0,0,.1);
+}
+.article-meta .author{
+  font-size:.875rem;
+  font-weight:700;
+  color:#222;
+}
+.article-meta .date{
+  font-size:.875rem;
+  color:#757575;
+}
+.article-intro{
+  font-size:1.125rem;
+  line-height:1.5;
+  color:#222;
+  margin-bottom:1.5rem;
+}
+
+/* ── Subbuzz items ── */
+main{
+  max-width:625px;
+  margin:0 auto;
+  padding:0 1rem;
+}
+.subbuzz{
+  margin-bottom:2rem;
+  scroll-margin-top:60px;
+}
+.subbuzz__number{
+  font-family:Calistoga,serif;
+  font-size:1.625rem;
+  font-weight:400;
+  color:#8b47ff;
+  line-height:1.2;
+  margin-bottom:.25rem;
+}
+.subbuzz__title{
+  font-size:1.25rem;
+  font-weight:600;
+  line-height:1.25;
+  color:#222;
+  margin-bottom:.5rem;
+}
+.subbuzz__text{
+  font-size:1.125rem;
+  line-height:1.5;
+  color:#222;
+  margin-bottom:.75rem;
+}
+.subbuzz__text em{font-style:italic;color:#757575}
+.headphones-note{
+  display:inline-block;
+  background:#fef3c7;
+  color:#92400e;
+  font-size:.8125rem;
+  font-weight:600;
+  padding:.2rem .55rem;
+  border-radius:3px;
+  margin-bottom:.5rem;
+}
+
+/* ── Play button ── */
+.play-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  border:none;
+  border-radius:3px;
+  padding:.5rem .875rem;
+  font-family:"Proxima Nova",Helvetica,Arial,sans-serif;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  color:#fff;
+  background:#0f65ef;
+  transition:background-color .15s ease;
+}
+.play-btn:hover{background:#093c8f}
+.play-btn:active{background:#072d6b}
+.play-btn.active{
+  background:#e32;
+}
+.play-btn.active:hover{
+  background:#c22;
+}
+
+/* ── Footer ── */
+footer{
+  max-width:625px;
+  margin:2rem auto 0;
+  padding:1.5rem 1rem 3rem;
+  border-top:1px solid rgba(0,0,0,.1);
+  font-size:.875rem;
+  color:#757575;
+  line-height:1.5;
+}
+
+/* ── Box breathing visual ── */
+.breath-visual{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  margin:1rem 0 .5rem;
+}
+.breath-visual.visible{display:flex}
+.box-container{
+  position:relative;
+  width:160px;
+  height:160px;
+}
+.box-outline{
+  position:absolute;
+  inset:0;
+  border:3px solid #8b47ff;
+  border-radius:3px;
+  opacity:.2;
+}
+.box-fill{
+  position:absolute;
+  inset:0;
+  border:3px solid #8b47ff;
+  border-radius:3px;
+  background:rgba(139,71,255,.05);
+}
+.box-dot{
+  position:absolute;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#8b47ff;
+  box-shadow:0 0 10px rgba(139,71,255,.5);
+  transform:translate(-50%,-50%);
+  transition:none;
+}
+.box-corners{
+  position:absolute;
+  inset:-22px;
+  pointer-events:none;
+  font-size:.6875rem;
+  font-weight:600;
+  color:#8b47ff;
+  opacity:.55;
+}
+.box-corners span{position:absolute}
+.box-corners .tl{top:0;left:0}
+.box-corners .tr{top:0;right:0}
+.box-corners .br{bottom:0;right:0}
+.box-corners .bl{bottom:0;left:0}
+.breath-label{
+  margin-top:.75rem;
+  font-size:1.125rem;
+  font-weight:700;
+  color:#8b47ff;
+  min-height:1.5em;
+}
+.breath-timer{
+  font-size:.875rem;
+  color:#757575;
+  font-variant-numeric:tabular-nums;
+  min-height:1.3em;
+}
+
+/* ── Responsive ── */
+@media(min-width:40rem){
+  .article-header h1{font-size:2.25rem}
+  .subbuzz__number{font-size:2.25rem}
+  .subbuzz__title{font-size:1.375rem}
+  .bf-nav{height:60px}
+}
+</style>
+</head>
+<body>
+
+<nav class="bf-nav">
+  <a class="bf-logo" href="#">BuzzFeed</a>
+</nav>
+
+<div class="article-header">
+  <h1>17 Sounds That Are Basically Cheat Codes for Your Brain</h1>
+  <div class="article-meta">
+    <span class="author">BuzzFeed Staff</span><br>
+    <span class="date">Posted on Feb 26, 2026</span>
+  </div>
+  <p class="article-intro">Every single one is backed by real research. Every single one plays right here in your browser. No apps, no signups, no "free trial" nonsense. Just press play and feel it. Best with headphones.</p>
+</div>
+
+<main id="list"></main>
+
+<footer>
+  <p><strong>Disclaimer:</strong> This page is for informational and entertainment purposes only. These sounds are not medical treatments. Consult a healthcare professional before using sound therapy for any medical condition. Citations reference published research but do not imply clinical endorsement.</p>
+</footer>
+
+<script>
+// ── Data ──────────────────────────────────────────────────
+const items = [
+  {
+    name: "Brown Noise",
+    category: "focus",
+    science: "OK so brown noise is having a moment and honestly? It's earned it. That deep, rumbly, almost-velvety sound masks distractions like nothing else. Söderlund et al. (2010) found broadband noise actually <em>improved</em> cognitive performance in inattentive kids by boosting stochastic resonance in the brain. TL;DR: your focus gets a serious upgrade. <em>Think gentle waterfall, not TV static.</em>"
+  },
+  {
+    name: "Pink Noise",
+    category: "sleep",
+    science: "If you've never heard of pink noise, prepare to have your sleep life changed forever. It's like white noise's chill older sibling — heavier on the low end, way easier on the ears. Ngo et al. (2013, Northwestern) found that pink noise played during deep sleep boosted memory consolidation by up to 60%. Sixty! Percent! <em>Your brain literally learns better while you snooze.</em>"
+  },
+  {
+    name: "White Noise",
+    category: "sleep",
+    science: "The OG. The classic. The one your parents probably used on you as a baby. White noise is equal energy across every frequency, which means it's incredibly good at drowning out random sounds that wake you up at 3 AM. Messineo et al. (2017) showed it cut the time to fall asleep by 38% in hospital patients. <em>Also a lifesaver if you have tinnitus.</em>"
+  },
+  {
+    name: "10 Hz Alpha Binaural Beat",
+    category: "calm",
+    science: "Here's where it gets wild: play a slightly different frequency in each ear, and your brain perceives a \"beat\" that doesn't actually exist. A 10 Hz alpha binaural beat taps into your brain's chill-out frequency. Padmanabhan et al. (2005) found it reduced pre-surgery anxiety by roughly 26%. <em>You NEED headphones for this one — the magic literally happens between your ears.</em>",
+    headphones: true
+  },
+  {
+    name: "6 Hz Theta Binaural Beat",
+    category: "calm",
+    science: "Theta waves (4–7 Hz) are what your brain does during deep meditation and those shower-thought moments of creative genius. Reedijk et al. (2013) showed that theta binaural beats actually boosted divergent thinking on creativity tasks. So if you're stuck on a problem, this might genuinely unstick you. <em>Headphones on, eyes closed, let your mind do its thing.</em>",
+    headphones: true
+  },
+  {
+    name: "40 Hz Gamma Tone",
+    category: "focus",
+    science: "This one is honestly kind of mind-blowing. MIT researchers (Iaccarino et al., 2016) found that 40 Hz light and sound stimulation reduced amyloid plaques — yes, the Alzheimer's ones — in mice. Human trials are happening right now. Even outside of that, 40 Hz gamma is linked to sharper attention and faster cognitive processing. <em>It's a gentle pulse, not the aggressive buzz you're imagining.</em>"
+  },
+  {
+    name: "528 Hz \"Love Frequency\"",
+    category: "calm",
+    science: "Yeah yeah, \"love frequency\" sounds woo-woo. But hear us out: Akimoto et al. (2018) found that 528 Hz music significantly lowered salivary cortisol (your stress hormone) and <em>increased</em> oxytocin (the bonding one). That's not vibes, that's a peer-reviewed journal. Whether you call it \"the miracle tone\" or just a really nice sine wave, your body seems to like it. <em>Just press play and notice how your shoulders drop.</em>"
+  },
+  {
+    name: "432 Hz Concert Pitch",
+    category: "calm",
+    science: "Most music is tuned to 440 Hz, but a growing number of people swear that 432 Hz just <em>feels</em> different — warmer, more natural. And there's data to back it up: Calamassi & Pomponi (2019) found that 432 Hz music produced a small but statistically significant drop in heart rate and blood pressure vs. 440 Hz. <em>Is it subtle? Yes. Can you feel it? Press play and decide for yourself.</em>"
+  },
+  {
+    name: "174 Hz Foundation Tone",
+    category: "body",
+    science: "The lowest note in the ancient solfeggio scale, and honestly it hits different. 174 Hz is traditionally linked to pain reduction and feeling physically grounded — practitioners call it a natural anesthetic. The research here is more experiential than clinical, but thousands of sound therapy users report the same thing: deep, almost heavy relaxation. <em>You don't just hear this one. You feel it in your chest.</em>"
+  },
+  {
+    name: "963 Hz Crown Tone",
+    category: "body",
+    science: "The highest solfeggio frequency sits at the opposite end of the spectrum — literally. Where 174 Hz grounds you, 963 Hz is all about clarity and expansion. Contemplative traditions link it to pineal gland activation and spiritual awareness. Clinical evidence is thin, but meditators have used this as a focus anchor for centuries and honestly? It does sound like staring at a clear sky. <em>Light, crystalline, kind of transcendent.</em>"
+  },
+  {
+    name: "SMR Isochronal Beat (15 Hz)",
+    category: "focus",
+    science: "SMR stands for Sensorimotor Rhythm (12–15 Hz), and neurofeedback therapists have been using it to treat ADHD for years. Arns et al. (2009) did a massive meta-analysis and found SMR training produced <em>large</em> effect sizes for improving attention. This isochronal pulse mimics that same rhythm — no EEG headset required. <em>If your brain needs a \"lock in\" signal, this is it.</em>"
+  },
+  {
+    name: "Ocean Waves",
+    category: "nature",
+    science: "There's a reason every spa on earth plays ocean sounds. That slow, rhythmic wash activates your parasympathetic nervous system — the \"rest and digest\" mode. Alvarsson et al. (2010) proved it: nature sounds beat artificial noise for stress recovery, measurably lowering heart rate and skin conductance. <em>Close your eyes and you're basically at the beach. Minus the sunburn.</em>"
+  },
+  {
+    name: "Rain",
+    category: "nature",
+    science: "Rain is nature's focus playlist. Its broadband spectrum is naturally similar to pink noise, which means it's basically <em>optimized</em> for concentration. Rausch et al. (2014) confirmed that steady-state nature sounds improved cognitive performance on demanding tasks. Also it's just... really cozy? There's a reason \"rainy day\" is everyone's favorite study aesthetic. <em>Instant lo-fi vibes, zero YouTube ads.</em>"
+  },
+  {
+    name: "Birdsong",
+    category: "nature",
+    science: "Ratcliffe et al. (2013, University of Surrey) surveyed what sounds people most associated with stress recovery and attention restoration. The winner? Birdsong, by a mile. Evolutionary psychologists think it's because birdsong = \"no predators nearby\" — a deep safety signal baked into your DNA. <em>These chirps are synthesized fresh every time, so it's never the same twice. Just like the real thing.</em>"
+  },
+  {
+    name: "Babbling Stream",
+    category: "nature",
+    science: "Psychologist Stephen Kaplan's Attention Restoration Theory (1995) explains why water sounds work so well: they provide \"soft fascination\" — just interesting enough to gently hold your attention, giving your overworked focus circuits a chance to rest and recharge. It's basically a spa day for your prefrontal cortex. <em>Like sitting next to a brook in the woods with absolutely nothing to do.</em>"
+  },
+  {
+    name: "40 Hz Vagal Hum",
+    category: "body",
+    science: "Two tones, one very cool trick. The 40 Hz sub-bass vibrates through your chest and stimulates the vagus nerve (the longest nerve in your body, responsible for calming you down). The 136 Hz layer on top is the \"Om\" frequency used in Vedic chanting. Together: gamma entrainment meets vagal stimulation. <em>Pro tip: hum along and feel the vibration in your throat. That's the vagus nerve saying thank you.</em>"
+  },
+  {
+    name: "Box Breathing (4-4-4-4)",
+    category: "body",
+    science: "Navy SEALs use this. First responders use this. And after you try it, you will too. Inhale 4 seconds, hold 4, exhale 4, hold 4. That's it. This simple pattern maximizes heart rate variability and activates vagal tone (Lehrer & Gevirtz, 2014). Ma et al. (2017) showed slow diaphragmatic breathing significantly cut cortisol and sharpened focus. <em>Follow the dot around the box. You'll feel the difference in about 30 seconds.</em>"
+  }
+];
+
+// ── Audio Engine ──────────────────────────────────────────
+let ctx = null;
+let masterGain = null;
+let currentHandle = null;
+let currentIndex = -1;
+
+function ensureCtx() {
+  if (!ctx) {
+    ctx = new AudioContext();
+    masterGain = ctx.createGain();
+    masterGain.gain.value = 0.45;
+    masterGain.connect(ctx.destination);
+  }
+  if (ctx.state === "suspended") ctx.resume();
+}
+
+// Utility: create looping white noise buffer
+function noiseBuffer() {
+  const len = ctx.sampleRate * 4;
+  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  }
+  return buf;
+}
+
+function makeNoise(dest) {
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer();
+  src.loop = true;
+  src.connect(dest);
+  src.start();
+  return src;
+}
+
+// ── 17 Sound Factories ───────────────────────────────────
+
+function startBrownNoise() {
+  const g = ctx.createGain(); g.gain.value = 0.8;
+  const lo = ctx.createBiquadFilter(); lo.type = "lowshelf"; lo.frequency.value = 200; lo.gain.value = 12;
+  const hi = ctx.createBiquadFilter(); hi.type = "highshelf"; hi.frequency.value = 800; hi.gain.value = -18;
+  const src = makeNoise(lo);
+  lo.connect(hi); hi.connect(g); g.connect(masterGain);
+  return { stop() { src.stop(); g.disconnect(); } };
+}
+
+function startPinkNoise() {
+  const g = ctx.createGain(); g.gain.value = 0.7;
+  const lo = ctx.createBiquadFilter(); lo.type = "lowshelf"; lo.frequency.value = 200; lo.gain.value = 6;
+  const hi = ctx.createBiquadFilter(); hi.type = "highshelf"; hi.frequency.value = 800; hi.gain.value = -9;
+  const src = makeNoise(lo);
+  lo.connect(hi); hi.connect(g); g.connect(masterGain);
+  return { stop() { src.stop(); g.disconnect(); } };
+}
+
+function startWhiteNoise() {
+  const g = ctx.createGain(); g.gain.value = 0.35;
+  const src = makeNoise(g);
+  g.connect(masterGain);
+  return { stop() { src.stop(); g.disconnect(); } };
+}
+
+function startBinaural(carrier, beatHz) {
+  const oscL = ctx.createOscillator(); oscL.type = "sine";
+  const oscR = ctx.createOscillator(); oscR.type = "sine";
+  oscL.frequency.value = carrier - beatHz / 2;
+  oscR.frequency.value = carrier + beatHz / 2;
+  const panL = ctx.createStereoPanner(); panL.pan.value = -1;
+  const panR = ctx.createStereoPanner(); panR.pan.value = 1;
+  const g = ctx.createGain(); g.gain.value = 0.35;
+  oscL.connect(panL); panL.connect(g);
+  oscR.connect(panR); panR.connect(g);
+  g.connect(masterGain);
+  oscL.start(); oscR.start();
+  return { stop() { oscL.stop(); oscR.stop(); g.disconnect(); } };
+}
+
+function startIsochronal(carrierHz, pulseHz) {
+  const osc = ctx.createOscillator(); osc.type = "sine"; osc.frequency.value = carrierHz;
+  const shaper = ctx.createGain(); shaper.gain.value = 0.5;
+  const modOsc = ctx.createOscillator(); modOsc.type = "sine"; modOsc.frequency.value = pulseHz;
+  const modG = ctx.createGain(); modG.gain.value = 0.5;
+  osc.connect(shaper); shaper.connect(masterGain);
+  modOsc.connect(modG); modG.connect(shaper.gain);
+  osc.start(); modOsc.start();
+  return { stop() { osc.stop(); modOsc.stop(); shaper.disconnect(); } };
+}
+
+function startPureTone(hz) {
+  const osc = ctx.createOscillator(); osc.type = "sine"; osc.frequency.value = hz;
+  const g = ctx.createGain(); g.gain.value = 0.3;
+  osc.connect(g); g.connect(masterGain);
+  osc.start();
+  return { stop() { osc.stop(); g.disconnect(); } };
+}
+
+function startOcean() {
+  const g = ctx.createGain(); g.gain.value = 0.7;
+  const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 600;
+  const src = makeNoise(lp);
+  lp.connect(g);
+
+  // Wave volume LFO
+  const waveLFO = ctx.createOscillator(); waveLFO.type = "sine"; waveLFO.frequency.value = 0.14;
+  const lfoG = ctx.createGain(); lfoG.gain.value = 0.3;
+  waveLFO.connect(lfoG); lfoG.connect(g.gain);
+  waveLFO.start();
+
+  // Filter sweep LFO
+  const fLFO = ctx.createOscillator(); fLFO.type = "sine"; fLFO.frequency.value = 0.12;
+  const fG = ctx.createGain(); fG.gain.value = 400;
+  fLFO.connect(fG); fG.connect(lp.frequency);
+  fLFO.start();
+
+  g.connect(masterGain);
+  return { stop() { src.stop(); waveLFO.stop(); fLFO.stop(); g.disconnect(); } };
+}
+
+function startRain() {
+  const g = ctx.createGain(); g.gain.value = 0.5;
+  const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 3000; bp.Q.value = 0.5;
+  const src = makeNoise(bp);
+  bp.connect(g); g.connect(masterGain);
+
+  // Droplets: schedule random clicks
+  let alive = true;
+  function scheduleDrop() {
+    if (!alive) return;
+    const sr = ctx.sampleRate;
+    const dur = 0.015 + Math.random() * 0.01;
+    const buf = ctx.createBuffer(1, dur * sr, sr);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (d.length * 0.3));
+    const dropSrc = ctx.createBufferSource(); dropSrc.buffer = buf;
+    const dbp = ctx.createBiquadFilter(); dbp.type = "bandpass"; dbp.frequency.value = 3000 + Math.random() * 3000; dbp.Q.value = 2;
+    const dg = ctx.createGain(); dg.gain.value = 0.12 + Math.random() * 0.1;
+    dropSrc.connect(dbp); dbp.connect(dg); dg.connect(masterGain);
+    dropSrc.start(ctx.currentTime);
+    dropSrc.stop(ctx.currentTime + dur);
+    setTimeout(scheduleDrop, 40 + Math.random() * 120);
+  }
+  scheduleDrop();
+
+  return { stop() { alive = false; src.stop(); g.disconnect(); } };
+}
+
+function startBirdsong() {
+  const g = ctx.createGain(); g.gain.value = 1; g.connect(masterGain);
+  let alive = true;
+
+  // A "bird" is defined by a base pitch range and a set of phrase patterns.
+  // Each phrase is a sequence of notes with relative pitch, duration, and sweep.
+  function makeBird(baseHz, patterns, volScale) {
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = Math.random() * 1.6 - 0.8; // spread across stereo field
+    pan.connect(g);
+
+    function playNote(freq, startTime, dur, sweepTo) {
+      const osc = ctx.createOscillator(); osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, startTime);
+      if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, startTime + dur * 0.85);
+
+      // Light FM vibrato for organic timbre
+      const vib = ctx.createOscillator(); vib.type = "sine";
+      vib.frequency.value = 20 + Math.random() * 30;
+      const vibG = ctx.createGain(); vibG.gain.value = freq * 0.015;
+      vib.connect(vibG); vibG.connect(osc.frequency);
+
+      // Amplitude envelope: quick attack, sustain, quick release
+      const env = ctx.createGain(); env.gain.value = 0;
+      const vol = (0.06 + Math.random() * 0.03) * (volScale || 1);
+      env.gain.setTargetAtTime(vol, startTime, 0.006);
+      env.gain.setTargetAtTime(vol * 0.7, startTime + dur * 0.3, dur * 0.2);
+      env.gain.setTargetAtTime(0, startTime + dur * 0.75, dur * 0.15);
+
+      osc.connect(env); env.connect(pan);
+      osc.start(startTime); vib.start(startTime);
+      osc.stop(startTime + dur + 0.15); vib.stop(startTime + dur + 0.15);
+    }
+
+    function singPhrase() {
+      if (!alive) return;
+      const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+      let t = ctx.currentTime + 0.01;
+      const pitchShift = 1 + (Math.random() - 0.5) * 0.08; // slight variation each phrase
+
+      for (const note of pattern) {
+        const freq = baseHz * note.p * pitchShift;
+        const dur = note.d * (0.9 + Math.random() * 0.2);
+        const sweep = note.s ? baseHz * note.s * pitchShift : null;
+
+        if (note.trill) {
+          // Rapid repeated notes (trill)
+          const trillCount = note.trill;
+          const trillDur = dur / trillCount;
+          for (let i = 0; i < trillCount; i++) {
+            playNote(freq * (1 + (i % 2) * 0.06), t, trillDur * 0.7, null);
+            t += trillDur;
+          }
+        } else {
+          playNote(freq, t, dur, sweep);
+          t += dur + (note.gap || 0.02);
+        }
+      }
+
+      // Pause between phrases: 1.5–4s
+      const pause = 1500 + Math.random() * 2500;
+      setTimeout(singPhrase, (t - ctx.currentTime) * 1000 + pause);
+    }
+
+    // Start after a random offset
+    setTimeout(singPhrase, Math.random() * 2000);
+  }
+
+  // ── Bird 1: Robin-like (descending whistles) ──
+  makeBird(2200, [
+    // "cheerily cheer-up cheerio" — descending 2-note whistles
+    [
+      { p: 1.4, d: 0.18, s: 1.2 }, { p: 1.2, d: 0.15, s: 1.0, gap: 0.08 },
+      { p: 1.35, d: 0.16, s: 1.15 }, { p: 1.15, d: 0.18, s: 0.95, gap: 0.08 },
+      { p: 1.3, d: 0.2, s: 1.1 },
+    ],
+    [
+      { p: 1.5, d: 0.2, s: 1.3 }, { p: 1.3, d: 0.12, gap: 0.06 },
+      { p: 1.45, d: 0.18, s: 1.25 }, { p: 1.2, d: 0.22, s: 1.0 },
+    ],
+    [
+      { p: 1.3, d: 0.22, s: 1.5 }, { p: 1.1, d: 0.15, gap: 0.1 },
+      { p: 1.25, d: 0.18, s: 1.0 },
+    ],
+  ], 1.0);
+
+  // ── Bird 2: Warbler-like (rapid trills + rising phrases) ──
+  makeBird(3200, [
+    [
+      { p: 0.9, d: 0.08, s: 1.1 }, { p: 1.0, d: 0.08, s: 1.2 },
+      { p: 1.1, d: 0.08, s: 1.3 }, { p: 1.2, d: 0.35, trill: 6 },
+    ],
+    [
+      { p: 1.0, d: 0.3, trill: 5 }, { p: 1.2, d: 0.12, s: 1.0, gap: 0.06 },
+      { p: 0.95, d: 0.25, trill: 4 },
+    ],
+    [
+      { p: 1.1, d: 0.1, s: 1.3 }, { p: 1.3, d: 0.1, s: 1.1 },
+      { p: 1.1, d: 0.1, s: 1.3 }, { p: 1.3, d: 0.15, s: 1.5 },
+    ],
+  ], 0.7);
+
+  // ── Bird 3: Sparrow-like (short repeated chips) ──
+  makeBird(4000, [
+    [
+      { p: 1.0, d: 0.06 }, { p: 1.0, d: 0.06, gap: 0.04 },
+      { p: 1.0, d: 0.06, gap: 0.04 }, { p: 1.05, d: 0.1, s: 0.95 },
+    ],
+    [
+      { p: 1.0, d: 0.05 }, { p: 1.02, d: 0.05, gap: 0.03 },
+      { p: 1.0, d: 0.05, gap: 0.03 }, { p: 0.98, d: 0.05, gap: 0.03 },
+      { p: 1.05, d: 0.12, s: 0.9 },
+    ],
+  ], 0.5);
+
+  return { stop() { alive = false; g.disconnect(); } };
+}
+
+function startStream() {
+  const out = ctx.createGain(); out.gain.value = 0.55;
+  out.connect(masterGain);
+  const oscs = []; // track all startable nodes for cleanup
+
+  // ── Layer 1: Low rumble (main water flow) ──
+  const lowSrc = makeNoise((() => {
+    const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 400;
+    const lg = ctx.createGain(); lg.gain.value = 0.35;
+    lp.connect(lg); lg.connect(out);
+    // Slow volume swell for flow variation
+    const lfo1 = ctx.createOscillator(); lfo1.type = "sine"; lfo1.frequency.value = 0.07;
+    const lfo1G = ctx.createGain(); lfo1G.gain.value = 0.1;
+    lfo1.connect(lfo1G); lfo1G.connect(lg.gain);
+    lfo1.start(); oscs.push(lfo1);
+    return lp;
+  })());
+
+  // ── Layer 2: Mid-range turbulence with comb filtering ──
+  const midBP = ctx.createBiquadFilter(); midBP.type = "bandpass"; midBP.frequency.value = 1800; midBP.Q.value = 1.5;
+  const midSrc = makeNoise(midBP);
+  // Dual comb filters at different delay times for richer resonance
+  for (const dt of [0.003, 0.0055]) {
+    const del = ctx.createDelay(); del.delayTime.value = dt;
+    const fb = ctx.createGain(); fb.gain.value = 0.35;
+    midBP.connect(del); del.connect(fb); fb.connect(del);
+    const cg = ctx.createGain(); cg.gain.value = 0.2;
+    del.connect(cg); cg.connect(out);
+  }
+  // LFO sweeps the bandpass center for movement
+  const midLFO = ctx.createOscillator(); midLFO.type = "sine"; midLFO.frequency.value = 0.18;
+  const midLG = ctx.createGain(); midLG.gain.value = 600;
+  midLFO.connect(midLG); midLG.connect(midBP.frequency);
+  midLFO.start(); oscs.push(midLFO);
+  // Also route some dry mid signal
+  const midDry = ctx.createGain(); midDry.gain.value = 0.15;
+  midBP.connect(midDry); midDry.connect(out);
+
+  // ── Layer 3: High sparkle (water splashing over rocks) ──
+  const hiBP = ctx.createBiquadFilter(); hiBP.type = "bandpass"; hiBP.frequency.value = 5000; hiBP.Q.value = 0.8;
+  const hiSrc = makeNoise(hiBP);
+  const hiG = ctx.createGain(); hiG.gain.value = 0.08;
+  hiBP.connect(hiG); hiG.connect(out);
+  // Faster LFO for shimmering
+  const hiLFO = ctx.createOscillator(); hiLFO.type = "sine"; hiLFO.frequency.value = 0.4;
+  const hiLG = ctx.createGain(); hiLG.gain.value = 0.05;
+  hiLFO.connect(hiLG); hiLG.connect(hiG.gain);
+  hiLFO.start(); oscs.push(hiLFO);
+
+  // ── Layer 4: Irregular gurgling (random resonant bursts) ──
+  let alive = true;
+  function gurgle() {
+    if (!alive) return;
+    const now = ctx.currentTime;
+    const dur = 0.04 + Math.random() * 0.08;
+    const freq = 600 + Math.random() * 1800;
+
+    const gOsc = ctx.createOscillator(); gOsc.type = "sine";
+    gOsc.frequency.setValueAtTime(freq, now);
+    gOsc.frequency.exponentialRampToValueAtTime(freq * (0.6 + Math.random() * 0.3), now + dur);
+
+    const gBP = ctx.createBiquadFilter(); gBP.type = "bandpass"; gBP.frequency.value = freq; gBP.Q.value = 8;
+    const gEnv = ctx.createGain(); gEnv.gain.value = 0;
+    gEnv.gain.setTargetAtTime(0.04 + Math.random() * 0.03, now, 0.005);
+    gEnv.gain.setTargetAtTime(0, now + dur * 0.4, dur * 0.35);
+
+    // Pan each gurgle randomly
+    const gPan = ctx.createStereoPanner(); gPan.pan.value = Math.random() * 1.4 - 0.7;
+
+    gOsc.connect(gBP); gBP.connect(gEnv); gEnv.connect(gPan); gPan.connect(out);
+    gOsc.start(now); gOsc.stop(now + dur + 0.2);
+
+    setTimeout(gurgle, 80 + Math.random() * 400);
+  }
+  gurgle();
+
+  return {
+    stop() {
+      alive = false;
+      lowSrc.stop(); midSrc.stop(); hiSrc.stop();
+      oscs.forEach(o => o.stop());
+      out.disconnect();
+    }
+  };
+}
+
+function startVagalHum() {
+  const sub = ctx.createOscillator(); sub.type = "sine"; sub.frequency.value = 40;
+  const subG = ctx.createGain(); subG.gain.value = 0.5;
+  const hum = ctx.createOscillator(); hum.type = "sine"; hum.frequency.value = 136;
+  const humG = ctx.createGain(); humG.gain.value = 0.25;
+
+  const warmth = ctx.createBiquadFilter(); warmth.type = "peaking"; warmth.frequency.value = 800; warmth.gain.value = 4; warmth.Q.value = 0.5;
+
+  sub.connect(subG); subG.connect(warmth);
+  hum.connect(humG); humG.connect(warmth);
+  warmth.connect(masterGain);
+  sub.start(); hum.start();
+  return { stop() { sub.stop(); hum.stop(); warmth.disconnect(); } };
+}
+
+function startBreathingPacer() {
+  // Box breathing: 4s inhale, 4s hold, 4s exhale, 4s hold = 16s cycle
+  const PHASE_DUR = 4;
+  const CYCLE = PHASE_DUR * 4;
+  const phases = ["Breathe in", "Hold", "Breathe out", "Hold"];
+
+  // ── Audio: gentle tone whose pitch and volume follow the box ──
+  const osc = ctx.createOscillator(); osc.type = "sine"; osc.frequency.value = 220;
+  const g = ctx.createGain(); g.gain.value = 0;
+  osc.connect(g); g.connect(masterGain);
+  osc.start();
+
+  // Schedule repeating box envelope on gain and pitch
+  const startTime = ctx.currentTime + 0.05;
+  function scheduleAudio(from) {
+    // Schedule several cycles ahead so audio stays smooth
+    for (let c = 0; c < 8; c++) {
+      const base = from + c * CYCLE;
+      if (base > ctx.currentTime + 60) break;
+      const t0 = base;                       // inhale start
+      const t1 = base + PHASE_DUR;           // hold start
+      const t2 = base + PHASE_DUR * 2;       // exhale start
+      const t3 = base + PHASE_DUR * 3;       // hold start
+
+      // Inhale: ramp volume up, pitch rises
+      g.gain.setValueAtTime(0.04, t0);
+      g.gain.linearRampToValueAtTime(0.22, t1);
+      osc.frequency.setValueAtTime(220, t0);
+      osc.frequency.linearRampToValueAtTime(330, t1);
+
+      // Hold high
+      g.gain.setValueAtTime(0.22, t1);
+      osc.frequency.setValueAtTime(330, t1);
+
+      // Exhale: ramp volume down, pitch falls
+      g.gain.setValueAtTime(0.22, t2);
+      g.gain.linearRampToValueAtTime(0.04, t3);
+      osc.frequency.setValueAtTime(330, t2);
+      osc.frequency.linearRampToValueAtTime(220, t3);
+
+      // Hold low
+      g.gain.setValueAtTime(0.04, t3);
+      osc.frequency.setValueAtTime(220, t3);
+    }
+  }
+  scheduleAudio(startTime);
+  // Re-schedule periodically to keep the buffer filled
+  const schedId = setInterval(() => {
+    const elapsed = ctx.currentTime - startTime;
+    const futureCycle = Math.floor(elapsed / CYCLE) + 1;
+    scheduleAudio(startTime + futureCycle * CYCLE);
+  }, 10000);
+
+  // ── Visual ──
+  const vis = document.getElementById("breath-visual");
+  const dot = document.getElementById("box-dot");
+  const boxFill = document.getElementById("box-fill");
+  const label = document.getElementById("breath-label");
+  const timer = document.getElementById("breath-timer");
+  vis.classList.add("visible");
+
+  // Box is 160×160. Dot travels: top-left → top-right → bottom-right → bottom-left → top-left
+  // Corners at (0,0), (160,0), (160,160), (0,160)
+  const S = 160; // box size
+  let rafId = 0;
+
+  function animate() {
+    const elapsed = ctx.currentTime - startTime;
+    const cycleT = ((elapsed % CYCLE) + CYCLE) % CYCLE; // 0..16
+    const phaseIdx = Math.min(3, Math.floor(cycleT / PHASE_DUR));
+    const phaseT = (cycleT - phaseIdx * PHASE_DUR) / PHASE_DUR; // 0..1 within phase
+
+    // Smooth easing
+    const t = phaseT;
+
+    // Dot position along box perimeter
+    let x, y;
+    switch (phaseIdx) {
+      case 0: x = t * S;     y = 0;         break; // top: left → right (inhale)
+      case 1: x = S;         y = t * S;     break; // right: top → bottom (hold)
+      case 2: x = (1 - t) * S; y = S;       break; // bottom: right → left (exhale)
+      case 3: x = 0;         y = (1 - t) * S; break; // left: bottom → top (hold)
+    }
+    dot.style.left = x + "px";
+    dot.style.top = y + "px";
+
+    // Fill opacity pulses with breathing: bright when lungs full (phase 0 end / phase 1)
+    const fillAlpha = phaseIdx === 0 ? 0.03 + t * 0.09
+      : phaseIdx === 1 ? 0.12
+      : phaseIdx === 2 ? 0.12 - t * 0.09
+      : 0.03;
+    boxFill.style.background = `rgba(139,71,255,${fillAlpha})`;
+
+    // Label
+    label.textContent = phases[phaseIdx];
+
+    // Countdown within phase
+    const secsLeft = Math.ceil(PHASE_DUR - (cycleT - phaseIdx * PHASE_DUR));
+    timer.textContent = secsLeft;
+
+    rafId = requestAnimationFrame(animate);
+  }
+  rafId = requestAnimationFrame(animate);
+
+  return {
+    stop() {
+      osc.stop(); g.disconnect();
+      cancelAnimationFrame(rafId);
+      clearInterval(schedId);
+      vis.classList.remove("visible");
+    }
+  };
+}
+
+// Map item index → start function
+const starters = [
+  () => startBrownNoise(),          // 0
+  () => startPinkNoise(),           // 1
+  () => startWhiteNoise(),          // 2
+  () => startBinaural(300, 10),     // 3  — 10 Hz alpha
+  () => startBinaural(300, 6),      // 4  — 6 Hz theta
+  () => startIsochronal(200, 40),   // 5  — 40 Hz gamma
+  () => startPureTone(528),         // 6
+  () => startPureTone(432),         // 7
+  () => startPureTone(174),         // 8
+  () => startPureTone(963),         // 9
+  () => startIsochronal(200, 15),   // 10 — 15 Hz SMR
+  () => startOcean(),               // 11
+  () => startRain(),                // 12
+  () => startBirdsong(),            // 13
+  () => startStream(),              // 14
+  () => startVagalHum(),            // 15
+  () => startBreathingPacer()       // 16
+];
+
+// ── Render ────────────────────────────────────────────────
+const list = document.getElementById("list");
+
+items.forEach((item, i) => {
+  const section = document.createElement("div");
+  section.className = "subbuzz";
+  section.id = "subbuzz-" + (i + 1);
+
+  const hp = item.headphones
+    ? `<span class="headphones-note">\uD83C\uDFA7 Headphones required</span><br>`
+    : "";
+
+  const breathHTML = i === 16 ? `
+      <div class="breath-visual" id="breath-visual">
+        <div class="box-container">
+          <div class="box-outline"></div>
+          <div class="box-fill" id="box-fill"></div>
+          <div class="box-dot" id="box-dot"></div>
+          <div class="box-corners">
+            <span class="tl">Start</span>
+            <span class="tr">Hold</span>
+            <span class="br">Exhale</span>
+            <span class="bl">Hold</span>
+          </div>
+        </div>
+        <span class="breath-label" id="breath-label"></span>
+        <span class="breath-timer" id="breath-timer"></span>
+      </div>` : "";
+
+  section.innerHTML = `
+    <div class="subbuzz__number">${i + 1}.</div>
+    <h2 class="subbuzz__title">${item.name}</h2>
+    ${hp}
+    <p class="subbuzz__text">${item.science}</p>
+    <button class="play-btn" data-item="${i}">\u25B6\uFE0E Play</button>
+    ${breathHTML}
+  `;
+  list.appendChild(section);
+});
+
+// ── Interaction ───────────────────────────────────────────
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".play-btn");
+  if (!btn) return;
+
+  ensureCtx();
+  const idx = parseInt(btn.dataset.item);
+
+  // If clicking the currently-active item → stop
+  if (idx === currentIndex && currentHandle) {
+    currentHandle.stop();
+    currentHandle = null;
+    currentIndex = -1;
+    btn.textContent = "\u25B6\uFE0E Play";
+    btn.classList.remove("active");
+    return;
+  }
+
+  // Stop previous
+  if (currentHandle) {
+    currentHandle.stop();
+    currentHandle = null;
+    const prev = document.querySelector(`.play-btn[data-item="${currentIndex}"]`);
+    if (prev) { prev.textContent = "\u25B6\uFE0E Play"; prev.classList.remove("active"); }
+  }
+
+  // Start new
+  currentHandle = starters[idx]();
+  currentIndex = idx;
+  btn.textContent = "\u25A0\uFE0E Stop";
+  btn.classList.add("active");
+});
+</script>
+</body>
+</html>
