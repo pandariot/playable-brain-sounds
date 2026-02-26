@@ -69,7 +69,6 @@ body {
 /* ── Screens ── */
 .screen {
   display: none;
-  min-height: 100vh;
   padding: 2rem 1.25rem;
 }
 .screen.active { display: flex; flex-direction: column; }
@@ -80,6 +79,9 @@ body {
   justify-content: center;
   text-align: center;
   gap: 1.5rem;
+  min-height: 480px;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 .intro-badge {
   font-family: 'Calistoga', serif;
@@ -133,7 +135,8 @@ body {
 /* ── QUIZ SCREEN ── */
 #quiz {
   align-items: center;
-  padding-top: 3rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2rem;
 }
 .quiz-progress {
   display: flex;
@@ -654,28 +657,37 @@ const questions = [
   {
     q: "How does your brain feel right now?",
     opts: [
-      { emoji:"🌀", text:"Scattered — can't focus", tags:["focus","focus"] },
-      { emoji:"😰", text:"Wired — need to chill", tags:["calm","body"] },
-      { emoji:"😴", text:"Exhausted — need rest", tags:["sleep","nature"] },
-      { emoji:"😶‍🌫️", text:"Stuck — need a reset", tags:["body","calm"] }
+      { emoji:"🌀", text:"Scattered — can't focus", tags:["focus"] },
+      { emoji:"😰", text:"Wired — need to chill", tags:["calm"] },
+      { emoji:"😴", text:"Exhausted — need rest", tags:["sleep"] },
+      { emoji:"😶‍🌫️", text:"Stuck — need a reset", tags:["body"] }
     ]
   },
   {
     q: "What are you trying to do next?",
     opts: [
-      { emoji:"💻", text:"Deep work or studying", tags:["focus","focus"] },
-      { emoji:"💡", text:"Creative thinking", tags:["calm","nature"] },
-      { emoji:"🛌", text:"Wind down or sleep", tags:["sleep","sleep"] },
-      { emoji:"🧘", text:"Just breathe and exist", tags:["body","nature"] }
+      { emoji:"💻", text:"Deep work or studying", tags:["focus"] },
+      { emoji:"💡", text:"Creative thinking", tags:["calm"] },
+      { emoji:"🛌", text:"Wind down or sleep", tags:["sleep"] },
+      { emoji:"🧘", text:"Just breathe and exist", tags:["body"] }
     ]
   },
   {
     q: "Pick the vibe that sounds best:",
     opts: [
-      { emoji:"🌊", text:"Nature and organic", tags:["nature","nature"] },
-      { emoji:"🔊", text:"Deep and rumbly", tags:["focus","sleep"] },
-      { emoji:"✨", text:"Tones and frequencies", tags:["calm","body"] },
-      { emoji:"💓", text:"Rhythmic and guided", tags:["body","body"] }
+      { emoji:"🌊", text:"Nature and organic", tags:["nature"] },
+      { emoji:"🔊", text:"Deep and rumbly", tags:["focus"] },
+      { emoji:"✨", text:"Tones and frequencies", tags:["calm"] },
+      { emoji:"💓", text:"Rhythmic and guided", tags:["body"] }
+    ]
+  },
+  {
+    q: "Last one — headphones on?",
+    opts: [
+      { emoji:"🎧", text:"Yes, locked in", tags:["calm"] },
+      { emoji:"🔈", text:"Nah, speakers", tags:["nature"] },
+      { emoji:"😴", text:"In bed, about to sleep", tags:["sleep"] },
+      { emoji:"🤷", text:"Whatever works", tags:["focus"] }
     ]
   }
 ];
@@ -1048,8 +1060,12 @@ function computeResult() {
   // Tally category scores
   const scores = { focus:0, sleep:0, calm:0, nature:0, body:0 };
   answers.forEach(tags => tags.forEach(t => scores[t]++));
+  
+  // Sort and handle ties by picking randomly among tied leaders
   const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
-  const topCat = sorted[0][0];
+  const topScore = sorted[0][1];
+  const tied = sorted.filter(s => s[1] === topScore);
+  const topCat = tied[Math.floor(Math.random() * tied.length)][0];
 
   showMixer(topCat);
 }
