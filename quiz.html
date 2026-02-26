@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Does Your Brain Need Right Now?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&family=Calistoga&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #141420;
+  --surface2: #1c1c2e;
+  --border: rgba(255,255,255,0.06);
+  --text: #e8e8f0;
+  --text-dim: #7a7a9a;
+  --accent: #7c5cfc;
+  --accent-glow: rgba(124,92,252,0.3);
+  --focus: #3b82f6;
+  --sleep: #6366f1;
+  --calm: #a78bfa;
+  --nature: #34d399;
+  --body: #f472b6;
+  --red: #ef4444;
+  --radius: 16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Ambient background ── */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient-bg .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.12;
+  animation: float 20s ease-in-out infinite;
+}
+.ambient-bg .orb:nth-child(1) { width:600px;height:600px;background:#7c5cfc;top:-200px;left:-100px;animation-delay:-5s; }
+.ambient-bg .orb:nth-child(2) { width:500px;height:500px;background:#3b82f6;bottom:-200px;right:-100px;animation-delay:-12s; }
+.ambient-bg .orb:nth-child(3) { width:400px;height:400px;background:#a78bfa;top:40%;left:50%;animation-delay:-8s; }
+
+@keyframes float {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(30px,-40px) scale(1.05); }
+  66% { transform: translate(-20px,30px) scale(0.95); }
+}
+
+/* ── Layout ── */
+.app { position: relative; z-index: 1; min-height: 100vh; }
+
+/* ── Screens ── */
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 2rem 1.25rem;
+}
+.screen.active { display: flex; flex-direction: column; }
+
+/* ── INTRO SCREEN ── */
+#intro {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+.intro-badge {
+  font-family: 'Calistoga', serif;
+  font-size: 0.8rem;
+  color: var(--red);
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+}
+.intro-title {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  max-width: 600px;
+  background: linear-gradient(135deg, #e8e8f0 0%, #a78bfa 50%, #7c5cfc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.intro-sub {
+  font-size: 1.05rem;
+  color: var(--text-dim);
+  max-width: 440px;
+  line-height: 1.55;
+}
+.intro-sub strong { color: var(--text); font-weight: 600; }
+
+.btn-start {
+  margin-top: 0.5rem;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 100px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--accent-glow); }
+
+.intro-fine {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  opacity: 0.6;
+  max-width: 360px;
+}
+
+/* ── QUIZ SCREEN ── */
+#quiz {
+  align-items: center;
+  padding-top: 3rem;
+}
+.quiz-progress {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2.5rem;
+}
+.quiz-pip {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 0.4s;
+}
+.quiz-pip.filled { background: var(--accent); }
+
+.quiz-question-wrapper {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+.quiz-q {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 2rem;
+  min-height: 3em;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.quiz-opt {
+  padding: 1.1rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  line-height: 1.3;
+}
+.quiz-opt:hover {
+  border-color: var(--accent);
+  background: var(--surface2);
+  transform: translateY(-2px);
+}
+.quiz-opt .opt-emoji {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+}
+
+/* ── RESULT / MIXER SCREEN ── */
+#mixer {
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+.result-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  max-width: 520px;
+}
+.result-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.result-title {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.result-desc {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ── Visualizer ── */
+.viz-container {
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 2.5 / 1;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  position: relative;
+}
+#visualizer {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.viz-idle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.viz-idle.hidden { opacity: 0; }
+
+/* ── Master control ── */
+.master-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 520px;
+  margin-bottom: 2rem;
+}
+.master-vol-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.master-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface2);
+  outline: none;
+}
+.master-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ── Sound cards ── */
+.sound-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.sound-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.sound-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(124,92,252,0.1);
+}
+.sound-card.active[data-cat="focus"] { border-color: var(--focus); box-shadow: 0 0 20px rgba(59,130,246,0.1); }
+.sound-card.active[data-cat="sleep"] { border-color: var(--sleep); box-shadow: 0 0 20px rgba(99,102,241,0.1); }
+.sound-card.active[data-cat="calm"] { border-color: var(--calm); box-shadow: 0 0 20px rgba(167,139,250,0.1); }
+.sound-card.active[data-cat="nature"] { border-color: var(--nature); box-shadow: 0 0 20px rgba(52,211,153,0.1); }
+.sound-card.active[data-cat="body"] { border-color: var(--body); box-shadow: 0 0 20px rgba(244,114,182,0.1); }
+
+.card-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.card-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s;
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+.sound-card.active .card-toggle {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.sound-card.active[data-cat="focus"] .card-toggle { background: var(--focus); border-color: var(--focus); }
+.sound-card.active[data-cat="sleep"] .card-toggle { background: var(--sleep); border-color: var(--sleep); }
+.sound-card.active[data-cat="calm"] .card-toggle { background: var(--calm); border-color: var(--calm); }
+.sound-card.active[data-cat="nature"] .card-toggle { background: var(--nature); border-color: var(--nature); }
+.sound-card.active[data-cat="body"] .card-toggle { background: var(--body); border-color: var(--body); }
+
+.card-info { flex: 1; min-width: 0; }
+.card-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.15rem;
+}
+.card-cat {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.card-hp {
+  font-size: 0.65rem;
+  background: rgba(251,191,36,0.15);
+  color: #fbbf24;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-left: 0.4rem;
+}
+.card-vol {
+  width: 70px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--surface2);
+  outline: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sound-card.active .card-vol { opacity: 1; }
+.card-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text);
+  cursor: pointer;
+}
+.card-expand-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+  transition: color 0.2s;
+}
+.card-expand-btn:hover { color: var(--text); }
+
+.card-science {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s;
+}
+.card-science.open {
+  max-height: 400px;
+}
+.card-science-inner {
+  padding: 0 1.1rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.card-science-inner em { color: var(--text-dim); font-style: italic; }
+
+/* ── Explore More ── */
+.explore-section {
+  width: 100%;
+  max-width: 520px;
+  margin-top: 2rem;
+}
+.explore-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+.explore-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.explore-chip {
+  padding: 0.55rem 0.9rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.explore-chip:hover { border-color: var(--accent); color: var(--text); }
+.explore-chip.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+/* ── Box Breathing Visual ── */
+.breath-visual {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1.1rem 1.25rem;
+}
+.breath-visual.visible { display: flex; }
+.box-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+.box-outline {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  opacity: 0.15;
+}
+.box-fill {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+}
+.box-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  transform: translate(-50%, -50%);
+}
+.box-corners {
+  position: absolute;
+  inset: -18px;
+  pointer-events: none;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--accent);
+  opacity: 0.5;
+}
+.box-corners span { position: absolute; }
+.box-corners .tl { top:0;left:0 }
+.box-corners .tr { top:0;right:0 }
+.box-corners .br { bottom:0;right:0 }
+.box-corners .bl { bottom:0;left:0 }
+.breath-label {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.breath-timer {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Footer ── */
+.mixer-footer {
+  margin-top: 3rem;
+  text-align: center;
+  max-width: 520px;
+}
+.mixer-footer p {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  opacity: 0.5;
+  line-height: 1.5;
+}
+
+/* ── Retake ── */
+.retake-btn {
+  margin-top: 2rem;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.retake-btn:hover { border-color: var(--text-dim); color: var(--text); }
+
+/* ── Transitions ── */
+.fade-in { animation: fadeIn 0.5s ease both; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+
+@media(max-width: 480px) {
+  .quiz-options { grid-template-columns: 1fr; }
+  .card-vol { width: 50px; }
+}
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+</div>
+
+<div class="app">
+
+  <!-- ── INTRO ── -->
+  <div class="screen active" id="intro">
+    <div class="intro-badge">BuzzFeed</div>
+    <h1 class="intro-title">What Does Your Brain Need Right Now?</h1>
+    <p class="intro-sub"><strong>17 research-backed sounds</strong> that can shift your focus, calm your nerves, or knock you out. We'll build you a custom mix in 30 seconds.</p>
+    <button class="btn-start" id="btn-start">Let's find out</button>
+    <p class="intro-fine">Best with headphones. No apps, no signups, no "free trial" nonsense.</p>
+  </div>
+
+  <!-- ── QUIZ ── -->
+  <div class="screen" id="quiz">
+    <div class="quiz-progress" id="quiz-progress"></div>
+    <div class="quiz-question-wrapper">
+      <h2 class="quiz-q" id="quiz-q"></h2>
+      <div class="quiz-options" id="quiz-options"></div>
+    </div>
+  </div>
+
+  <!-- ── MIXER ── -->
+  <div class="screen" id="mixer">
+    <div class="result-header fade-in">
+      <div class="result-label">Your brain prescription</div>
+      <h2 class="result-title" id="result-title"></h2>
+      <p class="result-desc" id="result-desc"></p>
+    </div>
+
+    <div class="viz-container fade-in stagger-1">
+      <canvas id="visualizer"></canvas>
+      <div class="viz-idle" id="viz-idle">tap a sound to begin</div>
+    </div>
+
+    <div class="master-row fade-in stagger-2">
+      <span class="master-vol-label">Master</span>
+      <input type="range" class="master-slider" id="master-vol" min="0" max="100" value="45">
+    </div>
+
+    <div class="sound-cards" id="sound-cards"></div>
+
+    <div class="explore-section fade-in" id="explore-section">
+      <div class="explore-label">Explore all sounds</div>
+      <div class="explore-chips" id="explore-chips"></div>
+    </div>
+
+    <button class="retake-btn" id="retake-btn">Retake quiz</button>
+
+    <div class="mixer-footer">
+      <p><strong>Disclaimer:</strong> For informational and entertainment purposes only. These sounds are not medical treatments. Consult a healthcare professional before using sound therapy for any medical condition.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════
+const sounds = [
+  { id:0, name:"Brown Noise", cat:"focus", science:"That deep, rumbly, almost-velvety sound masks distractions like nothing else. Söderlund et al. (2010) found broadband noise actually <em>improved</em> cognitive performance in inattentive kids by boosting stochastic resonance in the brain. Your focus gets a serious upgrade." },
+  { id:1, name:"Pink Noise", cat:"sleep", science:"Like white noise's chill older sibling — heavier on the low end, way easier on the ears. Ngo et al. (2013, Northwestern) found that pink noise played during deep sleep boosted memory consolidation by up to 60%." },
+  { id:2, name:"White Noise", cat:"sleep", science:"Equal energy across every frequency — incredibly good at drowning out random sounds. Messineo et al. (2017) showed it cut the time to fall asleep by 38% in hospital patients. <em>Also a lifesaver for tinnitus.</em>" },
+  { id:3, name:"10 Hz Alpha Binaural", cat:"calm", hp:true, science:"A slightly different frequency in each ear, and your brain perceives a \"beat\" that doesn't exist. Padmanabhan et al. (2005) found it reduced pre-surgery anxiety by roughly 26%. <em>Headphones required — the magic happens between your ears.</em>" },
+  { id:4, name:"6 Hz Theta Binaural", cat:"calm", hp:true, science:"Theta waves (4–7 Hz) are what your brain does during deep meditation and shower-thought creative moments. Reedijk et al. (2013) showed theta binaural beats boosted divergent thinking on creativity tasks." },
+  { id:5, name:"40 Hz Gamma Pulse", cat:"focus", science:"MIT researchers (Iaccarino et al., 2016) found that 40 Hz stimulation reduced amyloid plaques in mice. 40 Hz gamma is linked to sharper attention and faster cognitive processing. <em>A gentle pulse, not the aggressive buzz you're imagining.</em>" },
+  { id:6, name:"528 Hz Love Frequency", cat:"calm", science:"Akimoto et al. (2018) found that 528 Hz music significantly lowered salivary cortisol (stress hormone) and <em>increased</em> oxytocin (the bonding one). That's not vibes — that's a peer-reviewed journal." },
+  { id:7, name:"432 Hz Concert Pitch", cat:"calm", science:"Calamassi & Pomponi (2019) found that 432 Hz music produced a statistically significant drop in heart rate and blood pressure vs. standard 440 Hz tuning. <em>Subtle, but your body notices.</em>" },
+  { id:8, name:"174 Hz Foundation Tone", cat:"body", science:"The lowest solfeggio frequency. 174 Hz is linked to pain reduction and feeling physically grounded — practitioners call it a natural anesthetic. <em>You don't just hear this one. You feel it in your chest.</em>" },
+  { id:9, name:"963 Hz Crown Tone", cat:"body", science:"Where 174 Hz grounds you, 963 Hz is all about clarity and expansion. Meditators have used this as a focus anchor for centuries. <em>Light, crystalline, kind of transcendent.</em>" },
+  { id:10, name:"SMR Beat (15 Hz)", cat:"focus", science:"Sensorimotor Rhythm (12–15 Hz) — neurofeedback therapists use it to treat ADHD. Arns et al. (2009) meta-analysis found SMR training produced <em>large</em> effect sizes for improving attention." },
+  { id:11, name:"Ocean Waves", cat:"nature", science:"That slow, rhythmic wash activates your parasympathetic nervous system. Alvarsson et al. (2010) proved nature sounds beat artificial noise for stress recovery, measurably lowering heart rate and skin conductance." },
+  { id:12, name:"Rain", cat:"nature", science:"Rain's broadband spectrum is naturally similar to pink noise — basically <em>optimized</em> for concentration. Rausch et al. (2014) confirmed that steady-state nature sounds improved cognitive performance on demanding tasks." },
+  { id:13, name:"Birdsong", cat:"nature", science:"Ratcliffe et al. (2013, University of Surrey) found birdsong was the sound most associated with stress recovery. Evolutionary psychologists think it signals \"no predators nearby\" — a deep safety cue in your DNA." },
+  { id:14, name:"Babbling Stream", cat:"nature", science:"Stephen Kaplan's Attention Restoration Theory (1995): water sounds provide \"soft fascination\" — just interesting enough to gently hold attention, giving your focus circuits a chance to recharge." },
+  { id:15, name:"Vagal Hum", cat:"body", science:"40 Hz sub-bass vibrates through your chest and stimulates the vagus nerve. The 136 Hz layer is the \"Om\" frequency. Together: gamma entrainment meets vagal stimulation. <em>Hum along and feel it in your throat.</em>" },
+  { id:16, name:"Box Breathing", cat:"body", science:"Navy SEALs use this. Inhale 4s, hold 4, exhale 4, hold 4. Ma et al. (2017) showed slow diaphragmatic breathing significantly cut cortisol and sharpened focus. <em>Follow the dot around the box.</em>" }
+];
+
+const catLabels = { focus:"Focus", sleep:"Sleep", calm:"Calm", nature:"Nature", body:"Body" };
+const catColors = { focus:"var(--focus)", sleep:"var(--sleep)", calm:"var(--calm)", nature:"var(--nature)", body:"var(--body)" };
+
+// ── Quiz questions ──
+const questions = [
+  {
+    q: "How does your brain feel right now?",
+    opts: [
+      { emoji:"🌀", text:"Scattered — can't focus", tags:["focus","focus"] },
+      { emoji:"😰", text:"Wired — need to chill", tags:["calm","body"] },
+      { emoji:"😴", text:"Exhausted — need rest", tags:["sleep","nature"] },
+      { emoji:"😶‍🌫️", text:"Stuck — need a reset", tags:["body","calm"] }
+    ]
+  },
+  {
+    q: "What are you trying to do next?",
+    opts: [
+      { emoji:"💻", text:"Deep work or studying", tags:["focus","focus"] },
+      { emoji:"💡", text:"Creative thinking", tags:["calm","nature"] },
+      { emoji:"🛌", text:"Wind down or sleep", tags:["sleep","sleep"] },
+      { emoji:"🧘", text:"Just breathe and exist", tags:["body","nature"] }
+    ]
+  },
+  {
+    q: "Pick the vibe that sounds best:",
+    opts: [
+      { emoji:"🌊", text:"Nature and organic", tags:["nature","nature"] },
+      { emoji:"🔊", text:"Deep and rumbly", tags:["focus","sleep"] },
+      { emoji:"✨", text:"Tones and frequencies", tags:["calm","body"] },
+      { emoji:"💓", text:"Rhythmic and guided", tags:["body","body"] }
+    ]
+  }
+];
+
+// ── Result profiles ──
+const profiles = {
+  focus: {
+    title: "The Deep Focus Stack",
+    desc: "Your brain is craving structure. Here's a layered soundscape designed to lock you in — background noise to fill the silence, a rhythm to keep your attention steady, and nature to keep it from feeling sterile.",
+    primary: [0, 5, 12],   // Brown noise, Gamma, Rain
+    extra: [10, 1]           // SMR, Pink noise
+  },
+  sleep: {
+    title: "The Knockout Blend",
+    desc: "Your nervous system needs permission to shut down. This mix buries distractions under a warm blanket of noise, then layers in the specific frequencies researchers have linked to faster, deeper sleep.",
+    primary: [1, 2, 11],   // Pink, White, Ocean
+    extra: [7, 14]          // 432Hz, Stream
+  },
+  calm: {
+    title: "The Anxiety Eraser",
+    desc: "Time to take the edge off. This blend targets your stress response from multiple angles — frequency-specific cortisol reduction, binaural entrainment into alpha state, and a warm tonal bed that your nervous system can't resist relaxing into.",
+    primary: [3, 6, 7],    // Alpha binaural, 528Hz, 432Hz
+    extra: [4, 11]          // Theta, Ocean
+  },
+  nature: {
+    title: "The Digital Detox",
+    desc: "Your brain is overstimulated and it's begging for something organic. This is nature's own reset button — evolutionary sound signals that tell your fight-or-flight system to stand down.",
+    primary: [13, 11, 14], // Birdsong, Ocean, Stream
+    extra: [12, 1]          // Rain, Pink
+  },
+  body: {
+    title: "The Full Body Reset",
+    desc: "This one goes beyond your ears. These sounds are designed to be felt — in your chest, in your breath, in your vagus nerve. Stack them and your whole nervous system recalibrates.",
+    primary: [16, 15, 8],  // Breathing, Vagal hum, 174Hz
+    extra: [9, 3]           // 963Hz, Alpha
+  }
+};
+
+// ══════════════════════════════════════════════════════════
+// AUDIO ENGINE (from original)
+// ══════════════════════════════════════════════════════════
+let ctx = null;
+let masterGain = null;
+const activeHandles = {}; // id → { handle, gainNode }
+
+function ensureCtx() {
+  if (!ctx) {
+    ctx = new AudioContext();
+    masterGain = ctx.createGain();
+    masterGain.gain.value = 0.45;
+    masterGain.connect(ctx.destination);
+  }
+  if (ctx.state === "suspended") ctx.resume();
+}
+
+function noiseBuffer() {
+  const len = ctx.sampleRate * 4;
+  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  }
+  return buf;
+}
+function makeNoise(dest) {
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer();
+  src.loop = true;
+  src.connect(dest);
+  src.start();
+  return src;
+}
+
+function startBrownNoise() {
+  const g = ctx.createGain(); g.gain.value = 0.8;
+  const lo = ctx.createBiquadFilter(); lo.type="lowshelf"; lo.frequency.value=200; lo.gain.value=12;
+  const hi = ctx.createBiquadFilter(); hi.type="highshelf"; hi.frequency.value=800; hi.gain.value=-18;
+  const src = makeNoise(lo);
+  lo.connect(hi); hi.connect(g);
+  return { node:g, stop(){ src.stop(); g.disconnect(); } };
+}
+function startPinkNoise() {
+  const g = ctx.createGain(); g.gain.value = 0.7;
+  const lo = ctx.createBiquadFilter(); lo.type="lowshelf"; lo.frequency.value=200; lo.gain.value=6;
+  const hi = ctx.createBiquadFilter(); hi.type="highshelf"; hi.frequency.value=800; hi.gain.value=-9;
+  const src = makeNoise(lo);
+  lo.connect(hi); hi.connect(g);
+  return { node:g, stop(){ src.stop(); g.disconnect(); } };
+}
+function startWhiteNoise() {
+  const g = ctx.createGain(); g.gain.value = 0.35;
+  const src = makeNoise(g);
+  return { node:g, stop(){ src.stop(); g.disconnect(); } };
+}
+function startBinaural(carrier, beatHz) {
+  const oscL = ctx.createOscillator(); oscL.type="sine";
+  const oscR = ctx.createOscillator(); oscR.type="sine";
+  oscL.frequency.value = carrier - beatHz/2;
+  oscR.frequency.value = carrier + beatHz/2;
+  const panL = ctx.createStereoPanner(); panL.pan.value=-1;
+  const panR = ctx.createStereoPanner(); panR.pan.value=1;
+  const g = ctx.createGain(); g.gain.value = 0.35;
+  oscL.connect(panL); panL.connect(g);
+  oscR.connect(panR); panR.connect(g);
+  oscL.start(); oscR.start();
+  return { node:g, stop(){ oscL.stop(); oscR.stop(); g.disconnect(); } };
+}
+function startIsochronal(carrierHz, pulseHz) {
+  const osc = ctx.createOscillator(); osc.type="sine"; osc.frequency.value=carrierHz;
+  const shaper = ctx.createGain(); shaper.gain.value=0.5;
+  const modOsc = ctx.createOscillator(); modOsc.type="sine"; modOsc.frequency.value=pulseHz;
+  const modG = ctx.createGain(); modG.gain.value=0.5;
+  osc.connect(shaper);
+  modOsc.connect(modG); modG.connect(shaper.gain);
+  osc.start(); modOsc.start();
+  return { node:shaper, stop(){ osc.stop(); modOsc.stop(); shaper.disconnect(); } };
+}
+function startPureTone(hz) {
+  const osc = ctx.createOscillator(); osc.type="sine"; osc.frequency.value=hz;
+  const g = ctx.createGain(); g.gain.value = 0.3;
+  osc.connect(g);
+  osc.start();
+  return { node:g, stop(){ osc.stop(); g.disconnect(); } };
+}
+function startOcean() {
+  const g = ctx.createGain(); g.gain.value=0.7;
+  const lp = ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=600;
+  const src = makeNoise(lp);
+  lp.connect(g);
+  const waveLFO = ctx.createOscillator(); waveLFO.type="sine"; waveLFO.frequency.value=0.14;
+  const lfoG = ctx.createGain(); lfoG.gain.value=0.3;
+  waveLFO.connect(lfoG); lfoG.connect(g.gain);
+  waveLFO.start();
+  const filterLFO = ctx.createOscillator(); filterLFO.type="sine"; filterLFO.frequency.value=0.08;
+  const fLfoG = ctx.createGain(); fLfoG.gain.value=250;
+  filterLFO.connect(fLfoG); fLfoG.connect(lp.frequency);
+  filterLFO.start();
+  return { node:g, stop(){ src.stop(); waveLFO.stop(); filterLFO.stop(); g.disconnect(); } };
+}
+function startRain() {
+  const out = ctx.createGain(); out.gain.value=0.55;
+  // low rumble
+  const lowLP = ctx.createBiquadFilter(); lowLP.type="lowpass"; lowLP.frequency.value=300;
+  const lowG = ctx.createGain(); lowG.gain.value=0.5;
+  const lowSrc = makeNoise(lowLP); lowLP.connect(lowG); lowG.connect(out);
+  // mid patter
+  const midBP = ctx.createBiquadFilter(); midBP.type="bandpass"; midBP.frequency.value=2500; midBP.Q.value=0.5;
+  const midG = ctx.createGain(); midG.gain.value=0.2;
+  const midSrc = makeNoise(midBP); midBP.connect(midG); midG.connect(out);
+  // high shimmer
+  const hiHP = ctx.createBiquadFilter(); hiHP.type="highpass"; hiHP.frequency.value=6000;
+  const hiG = ctx.createGain(); hiG.gain.value=0.08;
+  const hiSrc = makeNoise(hiHP); hiHP.connect(hiG); hiG.connect(out);
+  return { node:out, stop(){ lowSrc.stop(); midSrc.stop(); hiSrc.stop(); out.disconnect(); } };
+}
+function startBirdsong() {
+  const out = ctx.createGain(); out.gain.value=0.35;
+  const bgLP = ctx.createBiquadFilter(); bgLP.type="lowpass"; bgLP.frequency.value=400;
+  const bgG = ctx.createGain(); bgG.gain.value=0.25;
+  const bgSrc = makeNoise(bgLP); bgLP.connect(bgG); bgG.connect(out);
+  let alive = true;
+  function chirp() {
+    if (!alive) return;
+    const now = ctx.currentTime;
+    const dur = 0.05 + Math.random()*0.12;
+    const startF = 2000+Math.random()*3000;
+    const endF = startF*(0.7+Math.random()*0.6);
+    const osc = ctx.createOscillator(); osc.type="sine";
+    osc.frequency.setValueAtTime(startF,now);
+    osc.frequency.exponentialRampToValueAtTime(endF,now+dur);
+    const env = ctx.createGain(); env.gain.value=0;
+    env.gain.setTargetAtTime(0.08+Math.random()*0.06,now,0.008);
+    env.gain.setTargetAtTime(0,now+dur*0.6,dur*0.25);
+    const pan = ctx.createStereoPanner(); pan.pan.value=Math.random()*1.6-0.8;
+    osc.connect(env); env.connect(pan); pan.connect(out);
+    osc.start(now); osc.stop(now+dur+0.15);
+    const reps = Math.random()<0.4 ? Math.floor(2+Math.random()*3) : 0;
+    for(let r=1;r<=reps;r++){
+      const t=now+r*(dur+0.03);
+      const ro=ctx.createOscillator(); ro.type="sine";
+      ro.frequency.setValueAtTime(startF*(0.95+Math.random()*0.1),t);
+      ro.frequency.exponentialRampToValueAtTime(endF*(0.95+Math.random()*0.1),t+dur);
+      const re=ctx.createGain(); re.gain.value=0;
+      re.gain.setTargetAtTime(0.06+Math.random()*0.04,t,0.008);
+      re.gain.setTargetAtTime(0,t+dur*0.6,dur*0.25);
+      ro.connect(re); re.connect(pan);
+      ro.start(t); ro.stop(t+dur+0.15);
+    }
+    setTimeout(chirp, 300+Math.random()*2500);
+  }
+  chirp();
+  return { node:out, stop(){ alive=false; bgSrc.stop(); out.disconnect(); } };
+}
+function startStream() {
+  const out = ctx.createGain(); out.gain.value=0.5;
+  // Base flow layers
+  const lowLP = ctx.createBiquadFilter(); lowLP.type="lowpass"; lowLP.frequency.value=500;
+  const lowG = ctx.createGain(); lowG.gain.value=0.4;
+  const lowSrc = makeNoise(lowLP); lowLP.connect(lowG); lowG.connect(out);
+  const midBP = ctx.createBiquadFilter(); midBP.type="bandpass"; midBP.frequency.value=1500; midBP.Q.value=0.8;
+  const midG = ctx.createGain(); midG.gain.value=0.15;
+  const midSrc = makeNoise(midBP); midBP.connect(midG); midG.connect(out);
+  const hiHP = ctx.createBiquadFilter(); hiHP.type="highpass"; hiHP.frequency.value=4000;
+  const hiG = ctx.createGain(); hiG.gain.value=0.06;
+  const hiSrc = makeNoise(hiHP); hiHP.connect(hiG); hiG.connect(out);
+  let alive = true;
+  function gurgle() {
+    if (!alive) return;
+    const now = ctx.currentTime;
+    const dur = 0.04+Math.random()*0.08;
+    const freq = 600+Math.random()*1800;
+    const gOsc = ctx.createOscillator(); gOsc.type="sine";
+    gOsc.frequency.setValueAtTime(freq,now);
+    gOsc.frequency.exponentialRampToValueAtTime(freq*(0.6+Math.random()*0.3),now+dur);
+    const gBP = ctx.createBiquadFilter(); gBP.type="bandpass"; gBP.frequency.value=freq; gBP.Q.value=8;
+    const gEnv = ctx.createGain(); gEnv.gain.value=0;
+    gEnv.gain.setTargetAtTime(0.04+Math.random()*0.03,now,0.005);
+    gEnv.gain.setTargetAtTime(0,now+dur*0.4,dur*0.35);
+    const gPan = ctx.createStereoPanner(); gPan.pan.value=Math.random()*1.4-0.7;
+    gOsc.connect(gBP); gBP.connect(gEnv); gEnv.connect(gPan); gPan.connect(out);
+    gOsc.start(now); gOsc.stop(now+dur+0.2);
+    setTimeout(gurgle, 80+Math.random()*400);
+  }
+  gurgle();
+  return { node:out, stop(){ alive=false; lowSrc.stop(); midSrc.stop(); hiSrc.stop(); out.disconnect(); } };
+}
+function startVagalHum() {
+  const sub = ctx.createOscillator(); sub.type="sine"; sub.frequency.value=40;
+  const subG = ctx.createGain(); subG.gain.value=0.5;
+  const hum = ctx.createOscillator(); hum.type="sine"; hum.frequency.value=136;
+  const humG = ctx.createGain(); humG.gain.value=0.25;
+  const warmth = ctx.createBiquadFilter(); warmth.type="peaking"; warmth.frequency.value=800; warmth.gain.value=4; warmth.Q.value=0.5;
+  const g = ctx.createGain(); g.gain.value = 1;
+  sub.connect(subG); subG.connect(warmth);
+  hum.connect(humG); humG.connect(warmth);
+  warmth.connect(g);
+  sub.start(); hum.start();
+  return { node:g, stop(){ sub.stop(); hum.stop(); g.disconnect(); } };
+}
+
+// Breathing pacer
+let breathRAF = 0, breathInterval = 0;
+function startBreathingPacer() {
+  const PHASE_DUR = 4, CYCLE = 16;
+  const phases = ["Breathe in","Hold","Breathe out","Hold"];
+  const osc = ctx.createOscillator(); osc.type="sine"; osc.frequency.value=220;
+  const g = ctx.createGain(); g.gain.value=0;
+  const outG = ctx.createGain(); outG.gain.value = 1;
+  osc.connect(g); g.connect(outG);
+  osc.start();
+  const startTime = ctx.currentTime+0.05;
+  function scheduleAudio(from) {
+    for(let c=0;c<8;c++){
+      const base=from+c*CYCLE;
+      if(base>ctx.currentTime+60)break;
+      g.gain.setValueAtTime(0.04,base);
+      g.gain.linearRampToValueAtTime(0.22,base+PHASE_DUR);
+      osc.frequency.setValueAtTime(220,base);
+      osc.frequency.linearRampToValueAtTime(330,base+PHASE_DUR);
+      g.gain.setValueAtTime(0.22,base+PHASE_DUR);
+      osc.frequency.setValueAtTime(330,base+PHASE_DUR);
+      g.gain.setValueAtTime(0.22,base+PHASE_DUR*2);
+      g.gain.linearRampToValueAtTime(0.04,base+PHASE_DUR*3);
+      osc.frequency.setValueAtTime(330,base+PHASE_DUR*2);
+      osc.frequency.linearRampToValueAtTime(220,base+PHASE_DUR*3);
+      g.gain.setValueAtTime(0.04,base+PHASE_DUR*3);
+      osc.frequency.setValueAtTime(220,base+PHASE_DUR*3);
+    }
+  }
+  scheduleAudio(startTime);
+  breathInterval = setInterval(()=>{
+    const elapsed=ctx.currentTime-startTime;
+    scheduleAudio(startTime+(Math.floor(elapsed/CYCLE)+1)*CYCLE);
+  },10000);
+
+  // Visual
+  const vis = document.getElementById("breath-visual");
+  const dot = document.getElementById("box-dot");
+  const boxFill = document.getElementById("box-fill");
+  const label = document.getElementById("breath-label");
+  const timer = document.getElementById("breath-timer");
+  if(vis) vis.classList.add("visible");
+
+  const S = 120;
+  function animate() {
+    const elapsed = ctx.currentTime - startTime;
+    const cycleT = ((elapsed%CYCLE)+CYCLE)%CYCLE;
+    const phaseIdx = Math.min(3,Math.floor(cycleT/PHASE_DUR));
+    const phaseT = (cycleT-phaseIdx*PHASE_DUR)/PHASE_DUR;
+    let x,y;
+    switch(phaseIdx){
+      case 0: x=phaseT*S; y=0; break;
+      case 1: x=S; y=phaseT*S; break;
+      case 2: x=(1-phaseT)*S; y=S; break;
+      case 3: x=0; y=(1-phaseT)*S; break;
+    }
+    if(dot){ dot.style.left=x+"px"; dot.style.top=y+"px"; }
+    if(boxFill){
+      const a = phaseIdx===0?0.03+phaseT*0.09:phaseIdx===1?0.12:phaseIdx===2?0.12-phaseT*0.09:0.03;
+      boxFill.style.background=`rgba(124,92,252,${a})`;
+    }
+    if(label) label.textContent=phases[phaseIdx];
+    if(timer) timer.textContent=Math.ceil(PHASE_DUR-(cycleT-phaseIdx*PHASE_DUR));
+    breathRAF=requestAnimationFrame(animate);
+  }
+  breathRAF=requestAnimationFrame(animate);
+
+  return { node:outG, stop(){ osc.stop(); g.disconnect(); outG.disconnect(); cancelAnimationFrame(breathRAF); clearInterval(breathInterval); if(vis)vis.classList.remove("visible"); } };
+}
+
+const starters = [
+  ()=>startBrownNoise(),()=>startPinkNoise(),()=>startWhiteNoise(),
+  ()=>startBinaural(300,10),()=>startBinaural(300,6),
+  ()=>startIsochronal(200,40),()=>startPureTone(528),()=>startPureTone(432),
+  ()=>startPureTone(174),()=>startPureTone(963),()=>startIsochronal(200,15),
+  ()=>startOcean(),()=>startRain(),()=>startBirdsong(),()=>startStream(),
+  ()=>startVagalHum(),()=>startBreathingPacer()
+];
+
+// ══════════════════════════════════════════════════════════
+// QUIZ LOGIC
+// ══════════════════════════════════════════════════════════
+let quizStep = 0;
+const answers = [];
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderQuiz() {
+  const q = questions[quizStep];
+  // Progress pips
+  const progHTML = questions.map((_,i) =>
+    `<div class="quiz-pip ${i <= quizStep ? 'filled':''}"></div>`
+  ).join('');
+  document.getElementById('quiz-progress').innerHTML = progHTML;
+  document.getElementById('quiz-q').textContent = q.q;
+
+  const optsHTML = q.opts.map((o,i) =>
+    `<button class="quiz-opt fade-in stagger-${i+1}" data-idx="${i}">
+      <span class="opt-emoji">${o.emoji}</span>${o.text}
+    </button>`
+  ).join('');
+  document.getElementById('quiz-options').innerHTML = optsHTML;
+}
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  showScreen('quiz');
+  quizStep = 0;
+  answers.length = 0;
+  renderQuiz();
+});
+
+document.getElementById('quiz-options').addEventListener('click', (e) => {
+  const btn = e.target.closest('.quiz-opt');
+  if (!btn) return;
+  const idx = parseInt(btn.dataset.idx);
+  answers.push(questions[quizStep].opts[idx].tags);
+  quizStep++;
+  if (quizStep < questions.length) {
+    renderQuiz();
+  } else {
+    computeResult();
+  }
+});
+
+function computeResult() {
+  // Tally category scores
+  const scores = { focus:0, sleep:0, calm:0, nature:0, body:0 };
+  answers.forEach(tags => tags.forEach(t => scores[t]++));
+  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const topCat = sorted[0][0];
+
+  showMixer(topCat);
+}
+
+// ══════════════════════════════════════════════════════════
+// MIXER
+// ══════════════════════════════════════════════════════════
+let currentProfile = null;
+
+function showMixer(cat) {
+  currentProfile = cat;
+  const profile = profiles[cat];
+
+  document.getElementById('result-title').textContent = profile.title;
+  document.getElementById('result-desc').textContent = profile.desc;
+
+  // Render primary sound cards
+  const cardsEl = document.getElementById('sound-cards');
+  cardsEl.innerHTML = '';
+
+  const allIds = [...profile.primary];
+  allIds.forEach((sid, i) => {
+    cardsEl.appendChild(createCard(sid, i));
+  });
+
+  // Explore chips (all sounds not in primary)
+  const chipsEl = document.getElementById('explore-chips');
+  chipsEl.innerHTML = '';
+  sounds.forEach(s => {
+    if (allIds.includes(s.id)) return;
+    const chip = document.createElement('button');
+    chip.className = 'explore-chip';
+    chip.textContent = s.name;
+    chip.dataset.id = s.id;
+    chip.addEventListener('click', () => {
+      // Add this sound as a card
+      if (document.querySelector(`.sound-card[data-id="${s.id}"]`)) {
+        // Already added, toggle it
+        toggleSound(s.id);
+        return;
+      }
+      chip.classList.add('active');
+      const card = createCard(s.id, cardsEl.children.length);
+      cardsEl.appendChild(card);
+      card.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    });
+    chipsEl.appendChild(chip);
+  });
+
+  showScreen('mixer');
+  initVisualizer();
+}
+
+function createCard(sid, idx) {
+  const s = sounds[sid];
+  const card = document.createElement('div');
+  card.className = `sound-card fade-in stagger-${Math.min(idx+1,4)}`;
+  card.dataset.id = sid;
+  card.dataset.cat = s.cat;
+
+  const hpBadge = s.hp ? `<span class="card-hp">🎧 Headphones</span>` : '';
+  const breathHTML = sid === 16 ? `
+    <div class="breath-visual" id="breath-visual">
+      <div class="box-container">
+        <div class="box-outline"></div>
+        <div class="box-fill" id="box-fill"></div>
+        <div class="box-dot" id="box-dot"></div>
+        <div class="box-corners">
+          <span class="tl">Start</span><span class="tr">Hold</span>
+          <span class="br">Exhale</span><span class="bl">Hold</span>
+        </div>
+      </div>
+      <span class="breath-label" id="breath-label"></span>
+      <span class="breath-timer" id="breath-timer"></span>
+    </div>` : '';
+
+  card.innerHTML = `
+    <div class="card-main">
+      <div class="card-toggle">▶</div>
+      <div class="card-info">
+        <div class="card-name">${s.name}${hpBadge}</div>
+        <div class="card-cat">${catLabels[s.cat]}</div>
+      </div>
+      <input type="range" class="card-vol" min="0" max="100" value="70" title="Volume">
+      <button class="card-expand-btn" title="Show science">ℹ️</button>
+    </div>
+    <div class="card-science">
+      <div class="card-science-inner">${s.science}</div>
+    </div>
+    ${breathHTML}
+  `;
+
+  // Toggle sound on card-main click
+  card.querySelector('.card-main').addEventListener('click', (e) => {
+    if (e.target.closest('.card-vol') || e.target.closest('.card-expand-btn')) return;
+    toggleSound(sid);
+  });
+
+  // Volume slider
+  card.querySelector('.card-vol').addEventListener('input', (e) => {
+    const val = e.target.value / 100;
+    if (activeHandles[sid]) {
+      activeHandles[sid].gainNode.gain.value = val;
+    }
+  });
+
+  // Science expand
+  card.querySelector('.card-expand-btn').addEventListener('click', () => {
+    card.querySelector('.card-science').classList.toggle('open');
+  });
+
+  return card;
+}
+
+function toggleSound(sid) {
+  ensureCtx();
+  const card = document.querySelector(`.sound-card[data-id="${sid}"]`);
+  if (!card) return;
+
+  if (activeHandles[sid]) {
+    // Stop
+    activeHandles[sid].handle.stop();
+    delete activeHandles[sid];
+    card.classList.remove('active');
+    card.querySelector('.card-toggle').textContent = '▶';
+  } else {
+    // Start
+    const handle = starters[sid]();
+    const gainNode = ctx.createGain();
+    gainNode.gain.value = card.querySelector('.card-vol').value / 100;
+    handle.node.connect(gainNode);
+    gainNode.connect(masterGain);
+    activeHandles[sid] = { handle, gainNode };
+    card.classList.add('active');
+    card.querySelector('.card-toggle').textContent = '■';
+  }
+
+  // Update viz idle state
+  const vizIdle = document.getElementById('viz-idle');
+  if (vizIdle) {
+    vizIdle.classList.toggle('hidden', Object.keys(activeHandles).length > 0);
+  }
+}
+
+// Master volume
+document.getElementById('master-vol').addEventListener('input', (e) => {
+  if (masterGain) masterGain.gain.value = e.target.value / 100;
+});
+
+// Retake
+document.getElementById('retake-btn').addEventListener('click', () => {
+  // Stop all sounds
+  Object.keys(activeHandles).forEach(sid => {
+    activeHandles[sid].handle.stop();
+    delete activeHandles[sid];
+  });
+  quizStep = 0;
+  answers.length = 0;
+  showScreen('quiz');
+  renderQuiz();
+});
+
+// ══════════════════════════════════════════════════════════
+// VISUALIZER
+// ══════════════════════════════════════════════════════════
+let analyser = null;
+let vizRAF = 0;
+
+function initVisualizer() {
+  if (!ctx) return;
+  if (!analyser) {
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    masterGain.connect(analyser);
+  }
+
+  const canvas = document.getElementById('visualizer');
+  const c = canvas.getContext('2d');
+  const bufLen = analyser.frequencyBinCount;
+  const dataArr = new Uint8Array(bufLen);
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    c.scale(devicePixelRatio, devicePixelRatio);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const catCol = currentProfile ? catColors[currentProfile] : 'var(--accent)';
+  // Parse the color for canvas
+  const colMap = { focus:'59,130,246', sleep:'99,102,241', calm:'167,139,250', nature:'52,211,153', body:'244,114,182' };
+  const rgb = colMap[currentProfile] || '124,92,252';
+
+  function draw() {
+    analyser.getByteFrequencyData(dataArr);
+    const w = canvas.width / devicePixelRatio;
+    const h = canvas.height / devicePixelRatio;
+    c.clearRect(0,0,w,h);
+
+    const barCount = 64;
+    const barW = w / barCount;
+    const step = Math.floor(bufLen / barCount);
+
+    for (let i = 0; i < barCount; i++) {
+      const val = dataArr[i * step] / 255;
+      const barH = val * h * 0.85;
+      const x = i * barW;
+
+      // Mirror bars from center
+      const grad = c.createLinearGradient(x, h/2 - barH/2, x, h/2 + barH/2);
+      grad.addColorStop(0, `rgba(${rgb},0.6)`);
+      grad.addColorStop(0.5, `rgba(${rgb},0.2)`);
+      grad.addColorStop(1, `rgba(${rgb},0.6)`);
+
+      c.fillStyle = grad;
+      c.fillRect(x + 1, h/2 - barH/2, barW - 2, barH);
+    }
+
+    vizRAF = requestAnimationFrame(draw);
+  }
+  cancelAnimationFrame(vizRAF);
+  draw();
+}
+
+// Start visualizer when audio context is first created
+const origEnsure = ensureCtx;
+ensureCtx = function() {
+  origEnsure();
+  if (!analyser) initVisualizer();
+};
+</script>
+</body>
+</html>
